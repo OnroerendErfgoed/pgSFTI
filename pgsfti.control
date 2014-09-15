@@ -1,0 +1,5 @@
+# pgisfti extension
+comment = 'A Simple Fuzzy Time Interval data type.'
+default_version = '1.0'
+module_pathname = '$libdir/pgsfti'
+relocatable = true
