@@ -5,7 +5,7 @@ DATA 		 = $(filter-out $(wildcard sql/*--*.sql),$(wildcard sql/*.sql))
 TESTS        = $(wildcard test/sql/*.sql)
 REGRESS      = $(patsubst test/sql/%.sql,%,$(TESTS))
 REGRESS_OPTS = --inputdir=test
-DOCS         = README.md
+DOCS         = $(wildcard doc/*.md)
 MODULES      = $(patsubst %.c,%,$(wildcard src/*.c))
 PG_CONFIG    = pg_config
 
