@@ -1,4 +1,4 @@
-MODULES = ./module/pgsfti
+MODULES = ./src/pgsfti
 EXTENSION = pgsfti
 DATA = ./data/pgsfti--1.0.sql
 DOCS = README.md
