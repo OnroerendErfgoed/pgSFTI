@@ -568,52 +568,6 @@ double kvd_intersects(sfti *a_ptr, sfti *b_ptr, double alpha, double beta)
 }
 
 
-/**
- * Comparative operations
- *
- * Currently uses a hardcoded threshold of 0.5
- */
-
-int sfti_lt(sfti *a_ptr, sfti *b_ptr)
-{
-	return (0.5 < allen_before(a_ptr, b_ptr, 0, 0));
-}
-
-int sfti_le(sfti *a_ptr, sfti *b_ptr)
-{
-	return (0.5 < kvd_before(a_ptr, b_ptr, 0, 0));
-}
-
-int sfti_eq(sfti *a_ptr, sfti *b_ptr)
-{
-	return (0.5 < allen_equals(a_ptr, b_ptr, 0, 0));
-}
-
-int sfti_ge(sfti *a_ptr, sfti *b_ptr)
-{
-	return (0.5 <  kvd_after(a_ptr, b_ptr, 0, 0));
-}
-
-int sfti_gt(sfti *a_ptr, sfti *b_ptr)
-{
-	return (0.5 < allen_after(a_ptr, b_ptr, 0, 0));
-}
-
-int sfti_cmp(sfti *a_ptr, sfti *b_ptr)
-{
-	double before, after;
-	before = kvd_before(a_ptr, b_ptr, 0, 0);
-	after = kvd_after(a_ptr, b_ptr, 0, 0);
-	if(before > after) {
-		return -1;
-	}
-	if(before < after) {
-		return 1;
-	}
-	return 0;	
-}
-
-
 PG_FUNCTION_INFO_V1(pg_allen_before);
 Datum pg_allen_before(PG_FUNCTION_ARGS);
 
