@@ -576,7 +576,7 @@ double kvd_intersects(sfti *a_ptr, sfti *b_ptr, double alpha, double beta)
 
 int sfti_lt(sfti *a_ptr, sfti *b_ptr)
 {
-	return (0.5 < kvd_before(a_ptr, b_ptr, 0, 0));
+	return (0.5 < allen_before(a_ptr, b_ptr, 0, 0));
 }
 
 int sfti_le(sfti *a_ptr, sfti *b_ptr)
