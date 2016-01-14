@@ -568,11 +568,11 @@ double kvd_intersects(sfti *a_ptr, sfti *b_ptr, double alpha, double beta)
 }
 
 
-PG_FUNCTION_INFO_V1(pg_allen_before);
-Datum pg_allen_before(PG_FUNCTION_ARGS);
+PG_FUNCTION_INFO_V1(sfti_allen_before);
+Datum sfti_allen_before(PG_FUNCTION_ARGS);
 
 Datum
-pg_allen_before(PG_FUNCTION_ARGS)
+sfti_allen_before(PG_FUNCTION_ARGS)
 {
 	sfti *a_ptr = (sfti *) PG_GETARG_POINTER(0);
 	sfti *b_ptr = (sfti *) PG_GETARG_POINTER(1);
@@ -582,11 +582,11 @@ pg_allen_before(PG_FUNCTION_ARGS)
 }
 
 
-PG_FUNCTION_INFO_V1(pg_allen_meets);
-Datum pg_allen_meets(PG_FUNCTION_ARGS);
+PG_FUNCTION_INFO_V1(sfti_allen_meets);
+Datum sfti_allen_meets(PG_FUNCTION_ARGS);
 
 Datum
-pg_allen_meets(PG_FUNCTION_ARGS)
+sfti_allen_meets(PG_FUNCTION_ARGS)
 {
 
 	sfti *a_ptr = (sfti *) PG_GETARG_POINTER(0);
@@ -596,11 +596,11 @@ pg_allen_meets(PG_FUNCTION_ARGS)
 	PG_RETURN_FLOAT8(allen_meets(a_ptr, b_ptr, alpha, beta));
 }
 
-PG_FUNCTION_INFO_V1(pg_allen_overlaps);
-Datum pg_allen_overlaps(PG_FUNCTION_ARGS);
+PG_FUNCTION_INFO_V1(sfti_allen_overlaps);
+Datum sfti_allen_overlaps(PG_FUNCTION_ARGS);
 
 Datum
-pg_allen_overlaps(PG_FUNCTION_ARGS)
+sfti_allen_overlaps(PG_FUNCTION_ARGS)
 {
 
 	sfti *a_ptr = (sfti *) PG_GETARG_POINTER(0);
@@ -610,11 +610,11 @@ pg_allen_overlaps(PG_FUNCTION_ARGS)
 	PG_RETURN_FLOAT8(allen_overlaps(a_ptr, b_ptr, alpha, beta));
 }
 
-PG_FUNCTION_INFO_V1(pg_allen_during);
-Datum pg_allen_during(PG_FUNCTION_ARGS);
+PG_FUNCTION_INFO_V1(sfti_allen_during);
+Datum sfti_allen_during(PG_FUNCTION_ARGS);
 
 Datum
-pg_allen_during(PG_FUNCTION_ARGS)
+sfti_allen_during(PG_FUNCTION_ARGS)
 {
 
 	sfti *a_ptr = (sfti *) PG_GETARG_POINTER(0);
@@ -624,11 +624,11 @@ pg_allen_during(PG_FUNCTION_ARGS)
 	PG_RETURN_FLOAT8(allen_during(a_ptr, b_ptr, alpha, beta));
 }
 
-PG_FUNCTION_INFO_V1(pg_allen_starts);
-Datum pg_allen_starts(PG_FUNCTION_ARGS);
+PG_FUNCTION_INFO_V1(sfti_allen_starts);
+Datum sfti_allen_starts(PG_FUNCTION_ARGS);
 
 Datum
-pg_allen_starts(PG_FUNCTION_ARGS)
+sfti_allen_starts(PG_FUNCTION_ARGS)
 {
 
 	sfti *a_ptr = (sfti *) PG_GETARG_POINTER(0);
@@ -638,12 +638,11 @@ pg_allen_starts(PG_FUNCTION_ARGS)
 	PG_RETURN_FLOAT8(allen_starts(a_ptr, b_ptr, alpha, beta));
 }
 
-
-PG_FUNCTION_INFO_V1(pg_allen_finishes);
-Datum pg_allen_finishes(PG_FUNCTION_ARGS);
+PG_FUNCTION_INFO_V1(sfti_allen_finishes);
+Datum sfti_allen_finishes(PG_FUNCTION_ARGS);
 
 Datum
-pg_allen_finishes(PG_FUNCTION_ARGS)
+sfti_allen_finishes(PG_FUNCTION_ARGS)
 {
 
 	sfti *a_ptr = (sfti *) PG_GETARG_POINTER(0);
@@ -653,11 +652,11 @@ pg_allen_finishes(PG_FUNCTION_ARGS)
 	PG_RETURN_FLOAT8(allen_finishes(a_ptr, b_ptr, alpha, beta));
 }
 
-PG_FUNCTION_INFO_V1(pg_allen_equals);
-Datum pg_allen_equals(PG_FUNCTION_ARGS);
+PG_FUNCTION_INFO_V1(sfti_allen_equals);
+Datum sfti_allen_equals(PG_FUNCTION_ARGS);
 
 Datum
-pg_allen_equals(PG_FUNCTION_ARGS)
+sfti_allen_equals(PG_FUNCTION_ARGS)
 {
 
 	sfti *a_ptr = (sfti *) PG_GETARG_POINTER(0);
@@ -667,11 +666,11 @@ pg_allen_equals(PG_FUNCTION_ARGS)
 	PG_RETURN_FLOAT8(allen_equals(a_ptr, b_ptr, alpha, beta));
 }
 
-PG_FUNCTION_INFO_V1(pg_allen_after);
-Datum pg_allen_after(PG_FUNCTION_ARGS);
+PG_FUNCTION_INFO_V1(sfti_allen_after);
+Datum sfti_allen_after(PG_FUNCTION_ARGS);
 
 Datum
-pg_allen_after(PG_FUNCTION_ARGS)
+sfti_allen_after(PG_FUNCTION_ARGS)
 {
 
 	sfti *a_ptr = (sfti *) PG_GETARG_POINTER(0);
@@ -682,11 +681,11 @@ pg_allen_after(PG_FUNCTION_ARGS)
 }
 
 
-PG_FUNCTION_INFO_V1(pg_allen_overlapped_by);
-Datum pg_allen_overlapped_by(PG_FUNCTION_ARGS);
+PG_FUNCTION_INFO_V1(sfti_allen_overlapped_by);
+Datum sfti_allen_overlapped_by(PG_FUNCTION_ARGS);
 
 Datum
-pg_allen_overlapped_by(PG_FUNCTION_ARGS)
+sfti_allen_overlapped_by(PG_FUNCTION_ARGS)
 {
 
 	sfti *a_ptr = (sfti *) PG_GETARG_POINTER(0);
@@ -696,11 +695,11 @@ pg_allen_overlapped_by(PG_FUNCTION_ARGS)
 	PG_RETURN_FLOAT8(allen_overlapped_by(a_ptr, b_ptr, alpha, beta));
 }
 
-PG_FUNCTION_INFO_V1(pg_allen_contains);
-Datum pg_allen_contains(PG_FUNCTION_ARGS);
+PG_FUNCTION_INFO_V1(sfti_allen_contains);
+Datum sfti_allen_contains(PG_FUNCTION_ARGS);
 
 Datum
-pg_allen_contains(PG_FUNCTION_ARGS)
+sfti_allen_contains(PG_FUNCTION_ARGS)
 {
 
 	sfti *a_ptr = (sfti *) PG_GETARG_POINTER(0);
@@ -710,11 +709,11 @@ pg_allen_contains(PG_FUNCTION_ARGS)
 	PG_RETURN_FLOAT8(allen_contains(a_ptr, b_ptr, alpha, beta));
 }
 
-PG_FUNCTION_INFO_V1(pg_allen_met_by);
-Datum pg_allen_met_by(PG_FUNCTION_ARGS);
+PG_FUNCTION_INFO_V1(sfti_allen_met_by);
+Datum sfti_allen_met_by(PG_FUNCTION_ARGS);
 
 Datum
-pg_allen_met_by(PG_FUNCTION_ARGS)
+sfti_allen_met_by(PG_FUNCTION_ARGS)
 {
 
 	sfti *a_ptr = (sfti *) PG_GETARG_POINTER(0);
@@ -724,11 +723,11 @@ pg_allen_met_by(PG_FUNCTION_ARGS)
 	PG_RETURN_FLOAT8(allen_met_by(a_ptr, b_ptr, alpha, beta));
 }
 
-PG_FUNCTION_INFO_V1(pg_allen_started_by);
-Datum pg_allen_started_by(PG_FUNCTION_ARGS);
+PG_FUNCTION_INFO_V1(sfti_allen_started_by);
+Datum sfti_allen_started_by(PG_FUNCTION_ARGS);
 
 Datum
-pg_allen_started_by(PG_FUNCTION_ARGS)
+sfti_allen_started_by(PG_FUNCTION_ARGS)
 {
 
 	sfti *a_ptr = (sfti *) PG_GETARG_POINTER(0);
@@ -738,11 +737,11 @@ pg_allen_started_by(PG_FUNCTION_ARGS)
 	PG_RETURN_FLOAT8(allen_started_by(a_ptr, b_ptr, alpha, beta));
 }
 
-PG_FUNCTION_INFO_V1(pg_allen_finished_by);
-Datum pg_allen_finished_by(PG_FUNCTION_ARGS);
+PG_FUNCTION_INFO_V1(sfti_allen_finished_by);
+Datum sfti_allen_finished_by(PG_FUNCTION_ARGS);
 
 Datum
-pg_allen_finished_by(PG_FUNCTION_ARGS)
+sfti_allen_finished_by(PG_FUNCTION_ARGS)
 {
 
 	sfti *a_ptr = (sfti *) PG_GETARG_POINTER(0);
@@ -752,11 +751,11 @@ pg_allen_finished_by(PG_FUNCTION_ARGS)
 	PG_RETURN_FLOAT8(allen_finished_by(a_ptr, b_ptr, alpha, beta));
 }
 
-PG_FUNCTION_INFO_V1(pg_kvd_before);
-Datum pg_kvd_before(PG_FUNCTION_ARGS);
+PG_FUNCTION_INFO_V1(sfti_kvd_before);
+Datum sfti_kvd_before(PG_FUNCTION_ARGS);
 
 Datum
-pg_kvd_before(PG_FUNCTION_ARGS)
+sfti_kvd_before(PG_FUNCTION_ARGS)
 {
 
 	sfti *a_ptr = (sfti *) PG_GETARG_POINTER(0);
@@ -766,11 +765,11 @@ pg_kvd_before(PG_FUNCTION_ARGS)
 	PG_RETURN_FLOAT8(kvd_before(a_ptr, b_ptr, alpha, beta));
 }
 
-PG_FUNCTION_INFO_V1(pg_kvd_after);
-Datum pg_kvd_after(PG_FUNCTION_ARGS);
+PG_FUNCTION_INFO_V1(sfti_kvd_after);
+Datum sfti_kvd_after(PG_FUNCTION_ARGS);
 
 Datum
-pg_kvd_after(PG_FUNCTION_ARGS)
+sfti_kvd_after(PG_FUNCTION_ARGS)
 {
 
 	sfti *a_ptr = (sfti *) PG_GETARG_POINTER(0);
@@ -780,11 +779,11 @@ pg_kvd_after(PG_FUNCTION_ARGS)
 	PG_RETURN_FLOAT8(kvd_after(a_ptr, b_ptr, alpha, beta));
 }
 
-PG_FUNCTION_INFO_V1(pg_kvd_during);
-Datum pg_kvd_during(PG_FUNCTION_ARGS);
+PG_FUNCTION_INFO_V1(sfti_kvd_during);
+Datum sfti_kvd_during(PG_FUNCTION_ARGS);
 
 Datum
-pg_kvd_during(PG_FUNCTION_ARGS)
+sfti_kvd_during(PG_FUNCTION_ARGS)
 {
 
 	sfti *a_ptr = (sfti *) PG_GETARG_POINTER(0);
@@ -794,11 +793,11 @@ pg_kvd_during(PG_FUNCTION_ARGS)
 	PG_RETURN_FLOAT8(kvd_during(a_ptr, b_ptr, alpha, beta));
 }
 
-PG_FUNCTION_INFO_V1(pg_kvd_contains);
-Datum pg_kvd_contains(PG_FUNCTION_ARGS);
+PG_FUNCTION_INFO_V1(sfti_kvd_contains);
+Datum sfti_kvd_contains(PG_FUNCTION_ARGS);
 
 Datum
-pg_kvd_contains(PG_FUNCTION_ARGS)
+sfti_kvd_contains(PG_FUNCTION_ARGS)
 {
 
 	sfti *a_ptr = (sfti *) PG_GETARG_POINTER(0);
@@ -808,11 +807,11 @@ pg_kvd_contains(PG_FUNCTION_ARGS)
 	PG_RETURN_FLOAT8(kvd_contains(a_ptr, b_ptr, alpha, beta));
 }
 
-PG_FUNCTION_INFO_V1(pg_kvd_intersects);
-Datum pg_kvd_intersects(PG_FUNCTION_ARGS);
+PG_FUNCTION_INFO_V1(sfti_kvd_intersects);
+Datum sfti_kvd_intersects(PG_FUNCTION_ARGS);
 
 Datum
-pg_kvd_intersects(PG_FUNCTION_ARGS)
+sfti_kvd_intersects(PG_FUNCTION_ARGS)
 {
 
 	sfti *a_ptr = (sfti *) PG_GETARG_POINTER(0);
@@ -822,88 +821,88 @@ pg_kvd_intersects(PG_FUNCTION_ARGS)
 	PG_RETURN_FLOAT8(kvd_intersects(a_ptr, b_ptr, alpha, beta));
 }
 
-PG_FUNCTION_INFO_V1(pg_strict_less);
-Datum pg_strict_less(PG_FUNCTION_ARGS);
+PG_FUNCTION_INFO_V1(sfti_strict_less);
+Datum sfti_strict_less(PG_FUNCTION_ARGS);
 
 Datum
-pg_strict_less(PG_FUNCTION_ARGS)
+sfti_strict_less(PG_FUNCTION_ARGS)
 {
 	sfti *a_ptr = (sfti *) PG_GETARG_POINTER(0);
 	sfti *b_ptr = (sfti *) PG_GETARG_POINTER(1);
 	PG_RETURN_BOOL(allen_before(a_ptr, b_ptr, 0, 0) > 0.5);
 }
 
-PG_FUNCTION_INFO_V1(pg_less);
-Datum pg_less(PG_FUNCTION_ARGS);
+PG_FUNCTION_INFO_V1(sfti_less);
+Datum sfti_less(PG_FUNCTION_ARGS);
 
 Datum
-pg_less(PG_FUNCTION_ARGS)
+sfti_less(PG_FUNCTION_ARGS)
 {
 	sfti *a_ptr = (sfti *) PG_GETARG_POINTER(0);
 	sfti *b_ptr = (sfti *) PG_GETARG_POINTER(1);
 	PG_RETURN_BOOL(kvd_before(a_ptr, b_ptr, 0, 0) > 0.5);
 }
 
-PG_FUNCTION_INFO_V1(pg_strict_greater);
-Datum pg_strict_greater(PG_FUNCTION_ARGS);
+PG_FUNCTION_INFO_V1(sfti_strict_greater);
+Datum sfti_strict_greater(PG_FUNCTION_ARGS);
 
 Datum
-pg_strict_greater(PG_FUNCTION_ARGS)
+sfti_strict_greater(PG_FUNCTION_ARGS)
 {
 	sfti *a_ptr = (sfti *) PG_GETARG_POINTER(0);
 	sfti *b_ptr = (sfti *) PG_GETARG_POINTER(1);
 	PG_RETURN_BOOL(allen_after(a_ptr, b_ptr, 0, 0) > 0.5);
 }
 
-PG_FUNCTION_INFO_V1(pg_greater);
-Datum pg_greater(PG_FUNCTION_ARGS);
+PG_FUNCTION_INFO_V1(sfti_greater);
+Datum sfti_greater(PG_FUNCTION_ARGS);
 
 Datum
-pg_greater(PG_FUNCTION_ARGS)
+sfti_greater(PG_FUNCTION_ARGS)
 {
 	sfti *a_ptr = (sfti *) PG_GETARG_POINTER(0);
 	sfti *b_ptr = (sfti *) PG_GETARG_POINTER(1);
 	PG_RETURN_BOOL(kvd_after(a_ptr, b_ptr, 0, 0) > 0.5);
 }
 
-PG_FUNCTION_INFO_V1(pg_equal);
-Datum pg_equal(PG_FUNCTION_ARGS);
+PG_FUNCTION_INFO_V1(sfti_equal);
+Datum sfti_equal(PG_FUNCTION_ARGS);
 
 Datum
-pg_equal(PG_FUNCTION_ARGS)
+sfti_equal(PG_FUNCTION_ARGS)
 {
 	sfti *a_ptr = (sfti *) PG_GETARG_POINTER(0);
 	sfti *b_ptr = (sfti *) PG_GETARG_POINTER(1);
 	PG_RETURN_BOOL(allen_equals(a_ptr, b_ptr, 0, 0) == 0.5);
 }
 
-PG_FUNCTION_INFO_V1(pg_intersects);
-Datum pg_intersects(PG_FUNCTION_ARGS);
+PG_FUNCTION_INFO_V1(sfti_intersects);
+Datum sfti_intersects(PG_FUNCTION_ARGS);
 
 Datum
-pg_intersects(PG_FUNCTION_ARGS)
+sfti_intersects(PG_FUNCTION_ARGS)
 {
 	sfti *a_ptr = (sfti *) PG_GETARG_POINTER(0);
 	sfti *b_ptr = (sfti *) PG_GETARG_POINTER(1);
 	PG_RETURN_BOOL(kvd_intersects(a_ptr, b_ptr, 0, 0) > 0.5);
 }
 
-PG_FUNCTION_INFO_V1(pg_during);
-Datum pg_during(PG_FUNCTION_ARGS);
+PG_FUNCTION_INFO_V1(sfti_during);
+Datum sfti_during(PG_FUNCTION_ARGS);
 
 Datum
-pg_during(PG_FUNCTION_ARGS)
+sfti_during(PG_FUNCTION_ARGS)
 {
 	sfti *a_ptr = (sfti *) PG_GETARG_POINTER(0);
 	sfti *b_ptr = (sfti *) PG_GETARG_POINTER(1);
 	PG_RETURN_BOOL(kvd_during(a_ptr, b_ptr, 0, 0) > 0.5);
 }
 
-PG_FUNCTION_INFO_V1(pg_contains);
-Datum pg_contains(PG_FUNCTION_ARGS);
+PG_FUNCTION_INFO_V1(sfti_contains);
+Datum sfti_contains(PG_FUNCTION_ARGS);
 
 Datum
-pg_contains(PG_FUNCTION_ARGS)
+sfti_contains(PG_FUNCTION_ARGS)
 {
 	sfti *a_ptr = (sfti *) PG_GETARG_POINTER(0);
 	sfti *b_ptr = (sfti *) PG_GETARG_POINTER(1);

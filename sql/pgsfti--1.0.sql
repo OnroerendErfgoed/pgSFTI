@@ -33,180 +33,180 @@ CREATE TYPE sfti (
 
 CREATE OR REPLACE FUNCTION allen_before(sfti, sfti, double precision, double precision)
 	RETURNS double precision
-	AS 'MODULE_PATHNAME', 'pg_allen_before'
+	AS 'MODULE_PATHNAME', 'sfti_allen_before'
 	LANGUAGE C IMMUTABLE STRICT;
 
 CREATE OR REPLACE FUNCTION allen_meets(sfti, sfti, double precision, double precision)
 	RETURNS double precision
-	AS 'MODULE_PATHNAME', 'pg_allen_meets'
+	AS 'MODULE_PATHNAME', 'sfti_allen_meets'
 	LANGUAGE C IMMUTABLE STRICT;
 
 CREATE OR REPLACE FUNCTION allen_overlaps(sfti, sfti, double precision, double precision)
 	RETURNS double precision
-	AS 'MODULE_PATHNAME', 'pg_allen_overlaps'
+	AS 'MODULE_PATHNAME', 'sfti_allen_overlaps'
 	LANGUAGE C IMMUTABLE STRICT;
 
 CREATE OR REPLACE FUNCTION allen_during(sfti, sfti, double precision, double precision)
 	RETURNS double precision
-	AS 'MODULE_PATHNAME', 'pg_allen_during'
+	AS 'MODULE_PATHNAME', 'sfti_allen_during'
 	LANGUAGE C IMMUTABLE STRICT;
 
 CREATE OR REPLACE FUNCTION allen_starts(sfti, sfti, double precision, double precision)
 	RETURNS double precision
-	AS 'MODULE_PATHNAME', 'pg_allen_starts'
+	AS 'MODULE_PATHNAME', 'sfti_allen_starts'
 	LANGUAGE C IMMUTABLE STRICT;	
 
 CREATE OR REPLACE FUNCTION allen_finishes(sfti, sfti, double precision, double precision)
 	RETURNS double precision
-	AS 'MODULE_PATHNAME', 'pg_allen_finishes'
+	AS 'MODULE_PATHNAME', 'sfti_allen_finishes'
 	LANGUAGE C IMMUTABLE STRICT;
 
 CREATE OR REPLACE FUNCTION allen_equals(sfti, sfti, double precision, double precision)
 	RETURNS double precision
-	AS 'MODULE_PATHNAME', 'pg_allen_equals'
+	AS 'MODULE_PATHNAME', 'sfti_allen_equals'
 	LANGUAGE C IMMUTABLE STRICT;
 
 CREATE OR REPLACE FUNCTION allen_after(sfti, sfti, double precision, double precision)
 	RETURNS double precision
-	AS 'MODULE_PATHNAME', 'pg_allen_after'
+	AS 'MODULE_PATHNAME', 'sfti_allen_after'
 	LANGUAGE C IMMUTABLE STRICT;
 
 CREATE OR REPLACE FUNCTION allen_overlapped_by(sfti, sfti, double precision, double precision)
 	RETURNS double precision
-	AS 'MODULE_PATHNAME', 'pg_allen_overlapped_by'
+	AS 'MODULE_PATHNAME', 'sfti_allen_overlapped_by'
 	LANGUAGE C IMMUTABLE STRICT;
 
 CREATE OR REPLACE FUNCTION allen_contains(sfti, sfti, double precision, double precision)
 	RETURNS double precision
-	AS 'MODULE_PATHNAME', 'pg_allen_contains'
+	AS 'MODULE_PATHNAME', 'sfti_allen_contains'
 	LANGUAGE C IMMUTABLE STRICT;
 
 CREATE OR REPLACE FUNCTION allen_met_by(sfti, sfti, double precision, double precision)
 	RETURNS double precision
-	AS 'MODULE_PATHNAME', 'pg_allen_met_by'
+	AS 'MODULE_PATHNAME', 'sfti_allen_met_by'
 	LANGUAGE C IMMUTABLE STRICT;
 
 CREATE OR REPLACE FUNCTION allen_started_by(sfti, sfti, double precision, double precision)
 	RETURNS double precision
-	AS 'MODULE_PATHNAME', 'pg_allen_started_by'
+	AS 'MODULE_PATHNAME', 'sfti_allen_started_by'
 	LANGUAGE C IMMUTABLE STRICT;
 
 CREATE OR REPLACE FUNCTION allen_finished_by(sfti, sfti, double precision, double precision)
 	RETURNS double precision
-	AS 'MODULE_PATHNAME', 'pg_allen_finished_by'
+	AS 'MODULE_PATHNAME', 'sfti_allen_finished_by'
 	LANGUAGE C IMMUTABLE STRICT;
 
 CREATE OR REPLACE FUNCTION kvd_before(sfti, sfti, double precision, double precision)
 	RETURNS double precision
-	AS 'MODULE_PATHNAME', 'pg_kvd_before'
+	AS 'MODULE_PATHNAME', 'sfti_kvd_before'
 	LANGUAGE C IMMUTABLE STRICT;
 
 CREATE OR REPLACE FUNCTION kvd_after(sfti, sfti, double precision, double precision)
 	RETURNS double precision
-	AS 'MODULE_PATHNAME', 'pg_kvd_after'
+	AS 'MODULE_PATHNAME', 'sfti_kvd_after'
 	LANGUAGE C IMMUTABLE STRICT;
 
 CREATE OR REPLACE FUNCTION kvd_during(sfti, sfti, double precision, double precision)
 	RETURNS double precision
-	AS 'MODULE_PATHNAME', 'pg_kvd_during'
+	AS 'MODULE_PATHNAME', 'sfti_kvd_during'
 	LANGUAGE C IMMUTABLE STRICT;
 
 CREATE OR REPLACE FUNCTION kvd_contains(sfti, sfti, double precision, double precision)
 	RETURNS double precision
-	AS 'MODULE_PATHNAME', 'pg_kvd_contains'
+	AS 'MODULE_PATHNAME', 'sfti_kvd_contains'
 	LANGUAGE C IMMUTABLE STRICT;
 
 CREATE OR REPLACE FUNCTION kvd_intersects(sfti, sfti, double precision, double precision)
 	RETURNS double precision
-	AS 'MODULE_PATHNAME', 'pg_kvd_intersects'
+	AS 'MODULE_PATHNAME', 'sfti_kvd_intersects'
 	LANGUAGE C IMMUTABLE STRICT;
 
-CREATE OR REPLACE FUNCTION pg_strict_less(sfti, sfti)
+CREATE OR REPLACE FUNCTION sfti_strict_less(sfti, sfti)
 	RETURNS bool
-	AS 'MODULE_PATHNAME', 'pg_strict_less'
+	AS 'MODULE_PATHNAME', 'sfti_strict_less'
 	LANGUAGE C IMMUTABLE STRICT;
 
 CREATE OPERATOR << (
     leftarg = sfti,
     rightarg = sfti,
-    procedure = pg_strict_less
+    procedure = sfti_strict_less
 );
 
-CREATE OR REPLACE FUNCTION pg_less(sfti, sfti)
+CREATE OR REPLACE FUNCTION sfti_less(sfti, sfti)
 	RETURNS bool
-	AS 'MODULE_PATHNAME', 'pg_less'
+	AS 'MODULE_PATHNAME', 'sfti_less'
 	LANGUAGE C IMMUTABLE STRICT;
 
 CREATE OPERATOR < (
     leftarg = sfti,
     rightarg = sfti,
-    procedure = pg_less
+    procedure = sfti_less
 );
 
-CREATE OR REPLACE FUNCTION pg_strict_greater(sfti, sfti)
+CREATE OR REPLACE FUNCTION sfti_strict_greater(sfti, sfti)
 	RETURNS bool
-	AS 'MODULE_PATHNAME', 'pg_strict_greater'
+	AS 'MODULE_PATHNAME', 'sfti_strict_greater'
 	LANGUAGE C IMMUTABLE STRICT;
 
 CREATE OPERATOR >> (
     leftarg = sfti,
     rightarg = sfti,
-    procedure = pg_strict_greater
+    procedure = sfti_strict_greater
 );
 
-CREATE OR REPLACE FUNCTION pg_greater(sfti, sfti)
+CREATE OR REPLACE FUNCTION sfti_greater(sfti, sfti)
 	RETURNS bool
-	AS 'MODULE_PATHNAME', 'pg_greater'
+	AS 'MODULE_PATHNAME', 'sfti_greater'
 	LANGUAGE C IMMUTABLE STRICT;
 
 CREATE OPERATOR > (
     leftarg = sfti,
     rightarg = sfti,
-    procedure = pg_greater
+    procedure = sfti_greater
 );
 
-CREATE OR REPLACE FUNCTION pg_equal(sfti, sfti)
+CREATE OR REPLACE FUNCTION sfti_equal(sfti, sfti)
 	RETURNS bool
-	AS 'MODULE_PATHNAME', 'pg_equal'
+	AS 'MODULE_PATHNAME', 'sfti_equal'
 	LANGUAGE C IMMUTABLE STRICT;
 
 CREATE OPERATOR = (
     leftarg = sfti,
     rightarg = sfti,
-    procedure = pg_equal
+    procedure = sfti_equal
 );
 
-CREATE OR REPLACE FUNCTION pg_intersects(sfti, sfti)
+CREATE OR REPLACE FUNCTION sfti_intersects(sfti, sfti)
 	RETURNS bool
-	AS 'MODULE_PATHNAME', 'pg_intersects'
+	AS 'MODULE_PATHNAME', 'sfti_intersects'
 	LANGUAGE C IMMUTABLE STRICT;
 
 CREATE OPERATOR && (
     leftarg = sfti,
     rightarg = sfti,
-    procedure = pg_intersects
+    procedure = sfti_intersects
 );
 
-CREATE OR REPLACE FUNCTION pg_during(sfti, sfti)
+CREATE OR REPLACE FUNCTION sfti_during(sfti, sfti)
 	RETURNS bool
-	AS 'MODULE_PATHNAME', 'pg_during'
+	AS 'MODULE_PATHNAME', 'sfti_during'
 	LANGUAGE C IMMUTABLE STRICT;
 
 CREATE OPERATOR @ (
     leftarg = sfti,
     rightarg = sfti,
-    procedure = pg_during
+    procedure = sfti_during
 );
 
-CREATE OR REPLACE FUNCTION pg_contains(sfti, sfti)
+CREATE OR REPLACE FUNCTION sfti_contains(sfti, sfti)
 	RETURNS bool
-	AS 'MODULE_PATHNAME', 'pg_contains'
+	AS 'MODULE_PATHNAME', 'sfti_contains'
 	LANGUAGE C IMMUTABLE STRICT;
 
 CREATE OPERATOR ~ (
     leftarg = sfti,
     rightarg = sfti,
-    procedure = pg_contains
+    procedure = sfti_contains
 );
 
 CREATE OR REPLACE FUNCTION sfti_makeX(datum date) RETURNS float AS $$
