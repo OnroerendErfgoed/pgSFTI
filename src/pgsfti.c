@@ -6,12 +6,14 @@
 
 #include "pgsfti.h"
 
-
-
 #ifdef PG_MODULE_MAGIC
 PG_MODULE_MAGIC;
 #endif
 
+
+/**
+ * Functions for the sfti type.
+ */
 
 PG_FUNCTION_INFO_V1(sfti_in);
 Datum sfti_in(PG_FUNCTION_ARGS);
@@ -147,10 +149,10 @@ double before_bb(sfti *a_ptr, sfti *b_ptr, double alpha, double beta)
     sla = sl(a_ptr);
     slb = sl(b_ptr);
     i = tw(la, 1.0 - lb);
-    alpha1 =    alpha + 
+    alpha1 =    alpha +
                 min(0.0, slb - beta)*(1.0-lb) +
                 max(beta, sla )*(1.0-la) -
-                sla + 
+                sla +
                 la * min(max(beta,slb),sla);
     j2 = long_before(a_ptr -> ka, b_ptr -> ka, alpha1, max(beta, max( sla, slb ) ) );
     j = min(la,j2);
@@ -274,10 +276,10 @@ double equals_be(sfti *a_ptr, sfti *b_ptr, double alpha, double beta)
     lb = b_ptr -> lambda;
     i = tw(la,lb);
     alpha8 =    alpha
-                + min(0.0, sr(b_ptr) - beta)*(1.0-lb) 
-                + min(max(beta,sr(b_ptr)),sl(a_ptr)) 
-                - la * sl(a_ptr) 
-                - lb * max(beta,sr(b_ptr)) 
+                + min(0.0, sr(b_ptr) - beta)*(1.0-lb)
+                + min(max(beta,sr(b_ptr)),sl(a_ptr))
+                - la * sl(a_ptr)
+                - lb * max(beta,sr(b_ptr))
                 + max(beta,max(sl(a_ptr),sr(b_ptr)))*tw(la,lb);
     j = before_or_equals(a_ptr -> ka, b_ptr -> kb, alpha8, max(beta,max(sl(a_ptr),sr(b_ptr))));
     return min(i,j);
@@ -289,7 +291,7 @@ double equals_be(sfti *a_ptr, sfti *b_ptr, double alpha, double beta)
  */
 
 double allen_before(sfti *a_ptr, sfti *b_ptr, double alpha, double beta)
-{	
+{
 	if((alpha == beta) == 0){
 		if(a_ptr->sb < b_ptr->sa) {
 			return 1;
@@ -321,7 +323,7 @@ double allen_meets(sfti *a_ptr, sfti *b_ptr, double alpha, double beta)
 	if(equal_be == 0) {
 		return 0;
 	}
-	return min(equal_eb, equal_be);	
+	return min(equal_eb, equal_be);
 }
 
 
@@ -348,7 +350,7 @@ double allen_overlaps(sfti *a_ptr, sfti *b_ptr, double alpha, double beta)
 	if(bef_ee == 0) {
 		return 0;
 	}
-	return min(bef_bb, min(bef_be, bef_ee));	
+	return min(bef_bb, min(bef_be, bef_ee));
 }
 
 
@@ -372,7 +374,7 @@ double allen_during(sfti *a_ptr, sfti *b_ptr, double alpha, double beta)
 	if(bef_ee == 0) {
 		return 0;
 	}
-	return min(bef_bb, bef_ee);	
+	return min(bef_bb, bef_ee);
 }
 
 
@@ -400,7 +402,7 @@ double allen_starts(sfti *a_ptr, sfti *b_ptr, double alpha, double beta)
 	if(ee == 0) {
 		return 0;
 	}
-	return min(ee, min(bb_ab, bb_ba));	
+	return min(ee, min(bb_ab, bb_ba));
 }
 
 
@@ -427,7 +429,7 @@ double allen_finishes(sfti *a_ptr, sfti *b_ptr, double alpha, double beta)
 	if(bb == 0) {
 		return 0;
 	}
-	return min(bb, min(ee_ab, ee_ba));	
+	return min(bb, min(ee_ab, ee_ba));
 }
 
 
@@ -458,7 +460,7 @@ double allen_equals(sfti *a_ptr, sfti *b_ptr, double alpha, double beta)
 	if(bb_ba == 0) {
 		return 0;
 	}
-	return min(min(bb_ab, bb_ba), min(ee_ab, ee_ba));	
+	return min(min(bb_ab, bb_ba), min(ee_ab, ee_ba));
 }
 
 
@@ -820,6 +822,10 @@ sfti_kvd_intersects(PG_FUNCTION_ARGS)
 	double beta = PG_GETARG_FLOAT8(3);
 	PG_RETURN_FLOAT8(kvd_intersects(a_ptr, b_ptr, alpha, beta));
 }
+
+/**
+ * Functions for operators.
+ */
 
 PG_FUNCTION_INFO_V1(sfti_strict_less);
 Datum sfti_strict_less(PG_FUNCTION_ARGS);
