@@ -1,5 +1,11 @@
+-- Create a Simple Fuzzy Time Interval Type
+
 CREATE TYPE sfti;
-	
+
+--
+-- Type IO
+--
+
 CREATE OR REPLACE FUNCTION  sfti_in(cstring)
     RETURNS sfti
     AS 'MODULE_PATHNAME', 'sfti_in'
@@ -21,7 +27,7 @@ CREATE OR REPLACE FUNCTION sfti_send(sfti)
    LANGUAGE C IMMUTABLE STRICT;
 
 CREATE TYPE sfti (
-   internallength = 40, 
+   internallength = 40,
    input = sfti_in,
    output = sfti_out,
    receive = sfti_recv,
@@ -30,6 +36,9 @@ CREATE TYPE sfti (
 );
 
 
+--
+-- Allen relations
+--
 
 CREATE OR REPLACE FUNCTION allen_before(sfti, sfti, double precision, double precision)
 	RETURNS double precision
@@ -54,7 +63,7 @@ CREATE OR REPLACE FUNCTION allen_during(sfti, sfti, double precision, double pre
 CREATE OR REPLACE FUNCTION allen_starts(sfti, sfti, double precision, double precision)
 	RETURNS double precision
 	AS 'MODULE_PATHNAME', 'sfti_allen_starts'
-	LANGUAGE C IMMUTABLE STRICT;	
+	LANGUAGE C IMMUTABLE STRICT;
 
 CREATE OR REPLACE FUNCTION allen_finishes(sfti, sfti, double precision, double precision)
 	RETURNS double precision
@@ -96,6 +105,10 @@ CREATE OR REPLACE FUNCTION allen_finished_by(sfti, sfti, double precision, doubl
 	AS 'MODULE_PATHNAME', 'sfti_allen_finished_by'
 	LANGUAGE C IMMUTABLE STRICT;
 
+--
+-- Extended Allen relations
+--
+
 CREATE OR REPLACE FUNCTION kvd_before(sfti, sfti, double precision, double precision)
 	RETURNS double precision
 	AS 'MODULE_PATHNAME', 'sfti_kvd_before'
@@ -120,6 +133,10 @@ CREATE OR REPLACE FUNCTION kvd_intersects(sfti, sfti, double precision, double p
 	RETURNS double precision
 	AS 'MODULE_PATHNAME', 'sfti_kvd_intersects'
 	LANGUAGE C IMMUTABLE STRICT;
+
+--
+-- Operators
+--
 
 CREATE OR REPLACE FUNCTION sfti_strict_less(sfti, sfti)
 	RETURNS bool
@@ -209,6 +226,11 @@ CREATE OPERATOR ~ (
     procedure = sfti_contains
 );
 
+
+--
+-- Turning time into SFTI
+--
+
 CREATE OR REPLACE FUNCTION sfti_makeX(datum date) RETURNS float AS $$
 DECLARE
 	year int;
@@ -226,6 +248,9 @@ BEGIN
 	RETURN year + ((EXTRACT(doy FROM $1) -1) / nr_of_days_in_year);
 END
 $$ LANGUAGE plpgsql IMMUTABLE;
+COMMENT ON FUNCTION Fstfi_makeX(date) IS
+'Turns a date into a point on our X axis.';
+
 
 CREATE OR REPLACE FUNCTION sfti_makeSFTI(sa date, ka date, kb date, sb date, l float) RETURNS sfti AS $$
 	SELECT format('(%s,%s,%s,%s,%s)',sfti_makeX($1),sfti_makeX($2),sfti_makeX($3),sfti_makeX($4),$5)::sfti;
@@ -234,6 +259,9 @@ $$ LANGUAGE sql IMMUTABLE;
 CREATE OR REPLACE FUNCTION sfti_makeSFTI(sa date, ka date, kb date, sb date) RETURNS sfti AS $$
 	SELECT sfti_makeSFTI($1,$2,$3,$4,1);
 $$ LANGUAGE sql IMMUTABLE;
+COMMENT ON FUNCTION sfti_makeSFTI(date, date, date, date) IS
+'Create a SFTI based on four dates that are the start of the support,
+the start of the core, the end of the core and the end of the support.';
 
 CREATE OR REPLACE FUNCTION sfti_makeSFTI(ka date, kb date, l float) RETURNS sfti AS $$
 	SELECT sfti_makeSFTI($1,$1,$2,$2,$3);
@@ -242,6 +270,10 @@ $$ LANGUAGE sql IMMUTABLE;
 CREATE OR REPLACE FUNCTION sfti_makeSFTI(ka date, kb date) RETURNS sfti AS $$
 	SELECT sfti_makeSFTI($1,$1,$2,$2,1);
 $$ LANGUAGE sql IMMUTABLE;
+COMMENT ON FUNCTION sfti_makeSFTI(date, date) IS
+'Create a SFTI based on two dates that are the start and the end of the core.
+The support is considered to be equal to the core.
+In effect this creates a sharp time interval.';
 
 CREATE OR REPLACE FUNCTION sfti_makeSFTI(d date, l float) RETURNS sfti AS $$
 	SELECT sfti_makeSFTI($1,$1,$1,$1,$2);
@@ -250,3 +282,51 @@ $$ LANGUAGE sql IMMUTABLE;
 CREATE OR REPLACE FUNCTION sfti_makeSFTI(d date) RETURNS sfti AS $$
 	SELECT sfti_makeSFTI($1,$1,$1,$1,1);
 $$ LANGUAGE sql IMMUTABLE;
+COMMENT ON FUNCTION sfti_makeSFTI(date) IS
+'Create a SFTI based on one date that is both the start and the end of the core.
+The support is considered to be equal to the core.
+In effect this creates a sharp time interval of a single date.';
+
+CREATE OR REPLACE FUNCTION sfti_fuzzify(ka date, kb date, lv interval, rv interval, l float) RETURNS sfti AS $$
+    SELECT sfti_makeFTI(($1 - $3)::date, $1, $2, ($2 + $4)::date,$5);
+$$ LANGUAGE sql IMMUTABLE;
+
+CREATE OR REPLACE FUNCTION sfti_fuzzify(ka date, kb date, lv interval, rv interval) RETURNS sfti AS $$
+    SELECT stfi_fuzzify($1,$2,$3,$4,1);
+$$ LANGUAGE sql IMMUTABLE;
+COMMENT ON FUNCTION sfti_fuzzify(date, date, interval, interval) IS
+'Creates a SFTI based on two dates that form the core of the SFTI and two intervals
+that determine the Fuzzy Beginning and Fuzzy End of the SFTI.';
+
+CREATE OR REPLACE FUNCTION sfti_fuzzify(ka date, kb date, v interval, l float) RETURNS sfti AS $$
+    SELECT sfti_fuzzify($1,$2,$3,$3,$4);
+$$ LANGUAGE sql IMMUTABLE;
+
+CREATE OR REPLACE FUNCTION sfti_fuzzify(ka date, kb date, v interval) RETURNS sfti AS $$
+    SELECT sfti_fuzzify($1,$2,$3,$3,1);
+$$ LANGUAGE sql IMMUTABLE;
+COMMENT ON FUNCTION sfti_fuzzify(date, date, interval) IS
+'Creates a SFTI based on two dates that form the core of the SFTI and one interval
+that determines both the Fuzzy Beginning and Fuzzy End of the SFTI.';
+
+CREATE OR REPLACE FUNCTION sfti_fuzzify(d date, lv interval, rv interval, l float) RETURNS sfti AS $$
+    SELECT sfti_fuzzify($1,$1,$2,$3,$4);
+$$ LANGUAGE sql IMMUTABLE;
+
+CREATE OR REPLACE FUNCTION sfti_fuzzify(d date, lv interval, rv interval) RETURNS sfti AS $$
+    SELECT sfti_fuzzify($1,$1,$2,$3,1);
+$$ LANGUAGE sql IMMUTABLE;
+COMMENT ON FUNCTION sfti_fuzzify(date, interval, interval) IS
+'Create a SFTI based on one date that forms the core of the SFTI and two intervals
+that determines the Fuzzy Beginning and Fuzzy End of the SFTI.';
+
+CREATE OR REPLACE FUNCTION sfti_fuzzify(d date, v interval, l float) RETURNS sfti AS $$
+    SELECT sfti_fuzzify($1,$1,$2,$2,$3);
+$$ LANGUAGE sql IMMUTABLE;
+
+CREATE OR REPLACE FUNCTION sfti_fuzzify(d date, v interval) RETURNS sfti AS $$
+    SELECT sfti_fuzzify($1,$1,$2,$2,1);
+$$ LANGUAGE sql IMMUTABLE;
+COMMENT ON FUNCTION sfti_fuzzify(date, interval) IS
+'Create a SFTI based on one date that forms the core of the SFTI and one interval
+that determines both the Fuzzy Beginning and Fuzzy End of the SFTI.';
