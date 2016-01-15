@@ -146,7 +146,8 @@ CREATE OR REPLACE FUNCTION sfti_strict_less(sfti, sfti)
 CREATE OPERATOR << (
     leftarg = sfti,
     rightarg = sfti,
-    procedure = sfti_strict_less
+    procedure = sfti_strict_less,
+    commutator = >>
 );
 
 CREATE OR REPLACE FUNCTION sfti_less(sfti, sfti)
@@ -157,7 +158,8 @@ CREATE OR REPLACE FUNCTION sfti_less(sfti, sfti)
 CREATE OPERATOR < (
     leftarg = sfti,
     rightarg = sfti,
-    procedure = sfti_less
+    procedure = sfti_less,
+    commutator = >
 );
 
 CREATE OR REPLACE FUNCTION sfti_strict_greater(sfti, sfti)
@@ -168,7 +170,8 @@ CREATE OR REPLACE FUNCTION sfti_strict_greater(sfti, sfti)
 CREATE OPERATOR >> (
     leftarg = sfti,
     rightarg = sfti,
-    procedure = sfti_strict_greater
+    procedure = sfti_strict_greater,
+    commutator = <<
 );
 
 CREATE OR REPLACE FUNCTION sfti_greater(sfti, sfti)
@@ -179,7 +182,8 @@ CREATE OR REPLACE FUNCTION sfti_greater(sfti, sfti)
 CREATE OPERATOR > (
     leftarg = sfti,
     rightarg = sfti,
-    procedure = sfti_greater
+    procedure = sfti_greater,
+    commutator = <
 );
 
 CREATE OR REPLACE FUNCTION sfti_equal(sfti, sfti)
@@ -190,7 +194,8 @@ CREATE OR REPLACE FUNCTION sfti_equal(sfti, sfti)
 CREATE OPERATOR = (
     leftarg = sfti,
     rightarg = sfti,
-    procedure = sfti_equal
+    procedure = sfti_equal,
+    commutator = =
 );
 
 CREATE OR REPLACE FUNCTION sfti_intersects(sfti, sfti)
@@ -201,7 +206,8 @@ CREATE OR REPLACE FUNCTION sfti_intersects(sfti, sfti)
 CREATE OPERATOR && (
     leftarg = sfti,
     rightarg = sfti,
-    procedure = sfti_intersects
+    procedure = sfti_intersects,
+    commutator = &&
 );
 
 CREATE OR REPLACE FUNCTION sfti_during(sfti, sfti)
@@ -248,7 +254,7 @@ BEGIN
 	RETURN year + ((EXTRACT(doy FROM $1) -1) / nr_of_days_in_year);
 END
 $$ LANGUAGE plpgsql IMMUTABLE;
-COMMENT ON FUNCTION Fstfi_makeX(date) IS
+COMMENT ON FUNCTION sfti_makeX(date) IS
 'Turns a date into a point on our X axis.';
 
 
@@ -288,11 +294,11 @@ The support is considered to be equal to the core.
 In effect this creates a sharp time interval of a single date.';
 
 CREATE OR REPLACE FUNCTION sfti_fuzzify(ka date, kb date, lv interval, rv interval, l float) RETURNS sfti AS $$
-    SELECT sfti_makeFTI(($1 - $3)::date, $1, $2, ($2 + $4)::date,$5);
+    SELECT sfti_makeSFTI(($1 - $3)::date, $1, $2, ($2 + $4)::date,$5);
 $$ LANGUAGE sql IMMUTABLE;
 
 CREATE OR REPLACE FUNCTION sfti_fuzzify(ka date, kb date, lv interval, rv interval) RETURNS sfti AS $$
-    SELECT stfi_fuzzify($1,$2,$3,$4,1);
+    SELECT sfti_fuzzify($1,$2,$3,$4,1);
 $$ LANGUAGE sql IMMUTABLE;
 COMMENT ON FUNCTION sfti_fuzzify(date, date, interval, interval) IS
 'Creates a SFTI based on two dates that form the core of the SFTI and two intervals
