@@ -827,55 +827,33 @@ sfti_kvd_intersects(PG_FUNCTION_ARGS)
  * Functions for operators.
  */
 
-PG_FUNCTION_INFO_V1(sfti_strict_less);
-Datum sfti_strict_less(PG_FUNCTION_ARGS);
+PG_FUNCTION_INFO_V1(sfti_lt);
+Datum sfti_lt(PG_FUNCTION_ARGS);
 
 Datum
-sfti_strict_less(PG_FUNCTION_ARGS)
+sfti_lt(PG_FUNCTION_ARGS)
 {
 	sfti *a_ptr = (sfti *) PG_GETARG_POINTER(0);
 	sfti *b_ptr = (sfti *) PG_GETARG_POINTER(1);
 	PG_RETURN_BOOL(allen_before(a_ptr, b_ptr, 0, 0) > 0.5);
 }
 
-PG_FUNCTION_INFO_V1(sfti_less);
-Datum sfti_less(PG_FUNCTION_ARGS);
+PG_FUNCTION_INFO_V1(sfti_gt);
+Datum sfti_gt(PG_FUNCTION_ARGS);
 
 Datum
-sfti_less(PG_FUNCTION_ARGS)
-{
-	sfti *a_ptr = (sfti *) PG_GETARG_POINTER(0);
-	sfti *b_ptr = (sfti *) PG_GETARG_POINTER(1);
-	PG_RETURN_BOOL(kvd_before(a_ptr, b_ptr, 0, 0) > 0.5);
-}
-
-PG_FUNCTION_INFO_V1(sfti_strict_greater);
-Datum sfti_strict_greater(PG_FUNCTION_ARGS);
-
-Datum
-sfti_strict_greater(PG_FUNCTION_ARGS)
+sfti_gt(PG_FUNCTION_ARGS)
 {
 	sfti *a_ptr = (sfti *) PG_GETARG_POINTER(0);
 	sfti *b_ptr = (sfti *) PG_GETARG_POINTER(1);
 	PG_RETURN_BOOL(allen_after(a_ptr, b_ptr, 0, 0) > 0.5);
 }
 
-PG_FUNCTION_INFO_V1(sfti_greater);
-Datum sfti_greater(PG_FUNCTION_ARGS);
+PG_FUNCTION_INFO_V1(sfti_eq);
+Datum sfti_eq(PG_FUNCTION_ARGS);
 
 Datum
-sfti_greater(PG_FUNCTION_ARGS)
-{
-	sfti *a_ptr = (sfti *) PG_GETARG_POINTER(0);
-	sfti *b_ptr = (sfti *) PG_GETARG_POINTER(1);
-	PG_RETURN_BOOL(kvd_after(a_ptr, b_ptr, 0, 0) > 0.5);
-}
-
-PG_FUNCTION_INFO_V1(sfti_equal);
-Datum sfti_equal(PG_FUNCTION_ARGS);
-
-Datum
-sfti_equal(PG_FUNCTION_ARGS)
+sfti_eq(PG_FUNCTION_ARGS)
 {
 	sfti *a_ptr = (sfti *) PG_GETARG_POINTER(0);
 	sfti *b_ptr = (sfti *) PG_GETARG_POINTER(1);
@@ -901,7 +879,7 @@ sfti_during(PG_FUNCTION_ARGS)
 {
 	sfti *a_ptr = (sfti *) PG_GETARG_POINTER(0);
 	sfti *b_ptr = (sfti *) PG_GETARG_POINTER(1);
-	PG_RETURN_BOOL(kvd_during(a_ptr, b_ptr, 0, 0) > 0.5);
+	PG_RETURN_BOOL(allen_during(a_ptr, b_ptr, 0, 0) > 0.5);
 }
 
 PG_FUNCTION_INFO_V1(sfti_contains);
@@ -912,5 +890,5 @@ sfti_contains(PG_FUNCTION_ARGS)
 {
 	sfti *a_ptr = (sfti *) PG_GETARG_POINTER(0);
 	sfti *b_ptr = (sfti *) PG_GETARG_POINTER(1);
-	PG_RETURN_BOOL(kvd_contains(a_ptr, b_ptr, 0, 0) > 0.5);
+	PG_RETURN_BOOL(allen_contains(a_ptr, b_ptr, 0, 0) > 0.5);
 }

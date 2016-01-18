@@ -138,51 +138,27 @@ CREATE OR REPLACE FUNCTION kvd_intersects(sfti, sfti, double precision, double p
 -- Operators
 --
 
-CREATE OR REPLACE FUNCTION sfti_strict_less(sfti, sfti)
+CREATE OR REPLACE FUNCTION sfti_lt(sfti, sfti)
 	RETURNS bool
-	AS 'MODULE_PATHNAME', 'sfti_strict_less'
-	LANGUAGE C IMMUTABLE STRICT;
-
-CREATE OPERATOR << (
-    leftarg = sfti,
-    rightarg = sfti,
-    procedure = sfti_strict_less,
-    commutator = >>
-);
-
-CREATE OR REPLACE FUNCTION sfti_less(sfti, sfti)
-	RETURNS bool
-	AS 'MODULE_PATHNAME', 'sfti_less'
+	AS 'MODULE_PATHNAME', 'sfti_lt'
 	LANGUAGE C IMMUTABLE STRICT;
 
 CREATE OPERATOR < (
     leftarg = sfti,
     rightarg = sfti,
-    procedure = sfti_less,
+    procedure = sfti_lt,
     commutator = >
 );
 
-CREATE OR REPLACE FUNCTION sfti_strict_greater(sfti, sfti)
+CREATE OR REPLACE FUNCTION sfti_gt(sfti, sfti)
 	RETURNS bool
-	AS 'MODULE_PATHNAME', 'sfti_strict_greater'
-	LANGUAGE C IMMUTABLE STRICT;
-
-CREATE OPERATOR >> (
-    leftarg = sfti,
-    rightarg = sfti,
-    procedure = sfti_strict_greater,
-    commutator = <<
-);
-
-CREATE OR REPLACE FUNCTION sfti_greater(sfti, sfti)
-	RETURNS bool
-	AS 'MODULE_PATHNAME', 'sfti_greater'
+	AS 'MODULE_PATHNAME', 'sfti_gt'
 	LANGUAGE C IMMUTABLE STRICT;
 
 CREATE OPERATOR > (
     leftarg = sfti,
     rightarg = sfti,
-    procedure = sfti_greater,
+    procedure = sfti_gt,
     commutator = <
 );
 

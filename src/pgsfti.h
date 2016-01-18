@@ -58,12 +58,3 @@ double kvd_after(sfti *a_ptr, sfti *b_ptr, double alpha, double beta);
 double kvd_during(sfti *a_ptr, sfti *b_ptr, double alpha, double beta);
 double kvd_contains(sfti *a_ptr, sfti *b_ptr, double alpha, double beta);
 double kvd_intersects(sfti *a_ptr, sfti *b_ptr, double alpha, double beta);
-
-/* Comparative relations */
-int sfti_lt(sfti *a_ptr, sfti *b_ptr);
-int sfti_le(sfti *a_ptr, sfti *b_ptr);
-int sfti_eq(sfti *a_ptr, sfti *b_ptr);
-int sfti_ge(sfti *a_ptr, sfti *b_ptr);
-int sfti_gt(sfti *a_ptr, sfti *b_ptr);
-int sfti_cmp(sfti *a_ptr, sfti *b_ptr);
-
