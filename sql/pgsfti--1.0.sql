@@ -162,15 +162,15 @@ CREATE OPERATOR > (
     commutator = <
 );
 
-CREATE OR REPLACE FUNCTION sfti_equal(sfti, sfti)
+CREATE OR REPLACE FUNCTION sfti_eq(sfti, sfti)
 	RETURNS bool
-	AS 'MODULE_PATHNAME', 'sfti_equal'
+	AS 'MODULE_PATHNAME', 'sfti_eq'
 	LANGUAGE C IMMUTABLE STRICT;
 
 CREATE OPERATOR = (
     leftarg = sfti,
     rightarg = sfti,
-    procedure = sfti_equal,
+    procedure = sfti_eq,
     commutator = =
 );
 
