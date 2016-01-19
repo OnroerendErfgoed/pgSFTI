@@ -49,7 +49,7 @@ sfti_out(PG_FUNCTION_ARGS)
     sfti	*frame = (sfti *) PG_GETARG_POINTER(0);
     char	*result;
     result = (char *) palloc(250);
-    snprintf(result, 250, "(%g,%g,%g,%g,%g)", frame->sa, frame->ka, frame->kb, frame->sb, frame->lambda);
+    snprintf(result, 250, "(%f,%f,%f,%f,%f)", frame->sa, frame->ka, frame->kb, frame->sb, frame->lambda);
     PG_RETURN_CSTRING(result);
 }
 
