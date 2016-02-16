@@ -262,10 +262,6 @@ COMMENT ON FUNCTION sfti_makeSFTI(integer, integer) IS
 The support is considered to be equal to the core.
 In effect this creates a sharp time interval.';
 
-CREATE OR REPLACE FUNCTION sfti_makeSFTI(d integer, l float) RETURNS sfti AS $$
-	SELECT sfti_makeSFTI($1,$1,$1,$1,$2);
-$$ LANGUAGE sql IMMUTABLE;
-
 CREATE OR REPLACE FUNCTION sfti_makeSFTI(d integer) RETURNS sfti AS $$
 	SELECT sfti_makeSFTI($1,$1,$1,$1,1);
 $$ LANGUAGE sql IMMUTABLE;
@@ -307,10 +303,6 @@ COMMENT ON FUNCTION sfti_makeSFTI(real, real) IS
 The support is considered to be equal to the core.
 In effect this creates a sharp time interval.';
 
-CREATE OR REPLACE FUNCTION sfti_makeSFTI(d real, l float) RETURNS sfti AS $$
-	SELECT sfti_makeSFTI($1,$1,$1,$1,$2);
-$$ LANGUAGE sql IMMUTABLE;
-
 CREATE OR REPLACE FUNCTION sfti_makeSFTI(d real) RETURNS sfti AS $$
 	SELECT sfti_makeSFTI($1,$1,$1,$1,1);
 $$ LANGUAGE sql IMMUTABLE;
@@ -318,6 +310,49 @@ COMMENT ON FUNCTION sfti_makeSFTI(real) IS
 'Create a SFTI based on one real that is both the start and the end of the core.
 The support is considered to be equal to the core.
 In effect this creates a sharp time interval of a single day.';
+
+-- From double precision to SFTI
+
+CREATE OR REPLACE FUNCTION sfti_makeSFTI(sa double precision, ka double precision, kb double precision, sb double precision, l float) RETURNS sfti AS $$
+	SELECT format('(%s,%s,%s,%s,%s)',$1,$2,$3,$4,$5)::sfti;
+$$ LANGUAGE sql IMMUTABLE;
+
+CREATE OR REPLACE FUNCTION sfti_makeSFTI(sa double precision, ka double precision, kb double precision, sb double precision) RETURNS sfti AS $$
+	SELECT sfti_makeSFTI($1,$2,$3,$4,1);
+$$ LANGUAGE sql IMMUTABLE;
+COMMENT ON FUNCTION sfti_makeSFTI(double precision, double precision, double precision, double precision) IS
+'Create a SFTI based on four double precisions that are the start of the support,
+the start of the core, the end of the core and the end of the support.';
+
+CREATE OR REPLACE FUNCTION sfti_makeSFTI(ka double precision, kb double precision, l float) RETURNS sfti AS $$
+	SELECT sfti_makeSFTI($1,$1,$2,$2,$3);
+$$ LANGUAGE sql IMMUTABLE;
+
+CREATE OR REPLACE FUNCTION sfti_makeSFTI(ka double precision, kb double precision) RETURNS sfti AS $$
+	SELECT sfti_makeSFTI($1,$1,$2,$2,1);
+$$ LANGUAGE sql IMMUTABLE;
+COMMENT ON FUNCTION sfti_makeSFTI(double precision, double precision) IS
+'Create a SFTI based on two double precisions that are the start and the end of the core.
+The support is considered to be equal to the core.
+In effect this creates a sharp time interval.';
+
+CREATE OR REPLACE FUNCTION sfti_makeSFTI(d double precision) RETURNS sfti AS $$
+	SELECT sfti_makeSFTI($1,$1,$1,$1,1);
+$$ LANGUAGE sql IMMUTABLE;
+COMMENT ON FUNCTION sfti_makeSFTI(double precision) IS
+'Create a SFTI based on one double precision that is both the start and the end of the core.
+The support is considered to be equal to the core.
+In effect this creates a sharp time interval of a single time point.';
+
+-- From numeric to SFTI
+
+CREATE OR REPLACE FUNCTION sfti_makeSFTI(d numeric) RETURNS sfti AS $$
+	SELECT sfti_makeSFTI($1::double precision);
+$$ LANGUAGE sql IMMUTABLE;
+COMMENT ON FUNCTION sfti_makeSFTI(numeric) IS
+'Create a SFTI based on one numeric that is both the start and the end of the core.
+The support is considered to be equal to the core.
+In effect this creates a sharp time interval of a single time point.';
 
 -- From date to SFTI
 
@@ -408,7 +443,9 @@ that determines both the Fuzzy Beginning and Fuzzy End of the SFTI.';
 -- Casts
 --
 
-CREATE CAST (integer as sfti) WITH FUNCTION sfti_makeSFTI(integer);
-CREATE CAST (smallint as sfti) WITH FUNCTION sfti_makeSFTI(smallint);
-CREATE CAST (real as sfti) WITH FUNCTION sfti_makeSFTI(real);
+CREATE CAST (integer AS sfti) WITH FUNCTION sfti_makeSFTI(integer);
+CREATE CAST (smallint AS sfti) WITH FUNCTION sfti_makeSFTI(smallint);
+CREATE CAST (real AS sfti) WITH FUNCTION sfti_makeSFTI(real);
+CREATE CAST (double precision AS sfti) WITH FUNCTION sfti_makeSFTI(double precision);
+CREATE CAST (numeric AS sfti) WITH FUNCTION sfti_makeSFTI(numeric);
 CREATE CAST (date AS sfti) WITH FUNCTION sfti_makeSFTI(date);
