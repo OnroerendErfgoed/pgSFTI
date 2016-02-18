@@ -233,6 +233,20 @@ $$ LANGUAGE plpgsql IMMUTABLE;
 COMMENT ON FUNCTION sfti_makeX(date) IS
 'Turns a date into a point on our X axis.';
 
+CREATE OR REPLACE FUNCTION sfti_makeX(year integer) RETURNS float AS $$
+DECLARE
+	year int;
+BEGIN
+    year = $1;
+	IF year < 0 THEN
+		year := year + 1;
+	END IF;
+	RETURN year;
+END
+$$ LANGUAGE plpgsql IMMUTABLE;
+COMMENT ON FUNCTION sfti_makeX(integer) IS
+'Turns a year into a point on our X axis.';
+
 --
 -- Type conversion functions
 --
@@ -240,11 +254,11 @@ COMMENT ON FUNCTION sfti_makeX(date) IS
 -- From integer to SFTI
 
 CREATE OR REPLACE FUNCTION sfti_makeSFTI(sa integer, ka integer, kb integer, sb integer, l float) RETURNS sfti AS $$
-	SELECT format('(%s,%s,%s,%s,%s)',$1,$2,$3,$4,$5)::sfti;
+	SELECT format('(%s,%s,%s,%s,%s)',sfti_makeX($1),sfti_makeX($2),sfti_makeX($3),sfti_makeX($4),$5)::sfti;
 $$ LANGUAGE sql IMMUTABLE;
 
 CREATE OR REPLACE FUNCTION sfti_makeSFTI(sa integer, ka integer, kb integer, sb integer) RETURNS sfti AS $$
-	SELECT sfti_makeSFTI($1,$2,$3,$4,1);
+	SELECT sfti_makeSFTI($1,$2,$3,$4,1.0);
 $$ LANGUAGE sql IMMUTABLE;
 COMMENT ON FUNCTION sfti_makeSFTI(integer, integer, integer, integer) IS
 'Create a SFTI based on four integers that are the start of the support,
@@ -255,104 +269,29 @@ CREATE OR REPLACE FUNCTION sfti_makeSFTI(ka integer, kb integer, l float) RETURN
 $$ LANGUAGE sql IMMUTABLE;
 
 CREATE OR REPLACE FUNCTION sfti_makeSFTI(ka integer, kb integer) RETURNS sfti AS $$
-	SELECT sfti_makeSFTI($1,$1,$2,$2,1);
+	SELECT sfti_makeSFTI($1,$1,$2,$2,1.0);
 $$ LANGUAGE sql IMMUTABLE;
 COMMENT ON FUNCTION sfti_makeSFTI(integer, integer) IS
 'Create a SFTI based on two integers that are the start and the end of the core.
 The support is considered to be equal to the core.
 In effect this creates a sharp time interval.';
 
-CREATE OR REPLACE FUNCTION sfti_makeSFTI(d integer) RETURNS sfti AS $$
-	SELECT sfti_makeSFTI($1,$1,$1,$1,1);
+CREATE OR REPLACE FUNCTION sfti_makeSFTI(y integer) RETURNS sfti AS $$
+	SELECT sfti_makeSFTI($1,$1,$1,$1,1.0);
 $$ LANGUAGE sql IMMUTABLE;
 COMMENT ON FUNCTION sfti_makeSFTI(integer) IS
-'Create a SFTI based on one integer that is both the start and the end of the core.
+'Create a SFTI based on one year that is both the start and the end of the core.
 The support is considered to be equal to the core.
-In effect this creates a sharp time interval of a single day.';
+In effect this creates a sharp time interval of a single day, 
+the first of a certain year.';
 
 CREATE OR REPLACE FUNCTION sfti_makeSFTI(d smallint) RETURNS sfti AS $$
-	SELECT sfti_makeSFTI($1::integer);
+	SELECT sfti_makeSFTI($1::integer, $1::integer, $1::integer, $1::integer, 1.0);
 $$ LANGUAGE sql IMMUTABLE;
 COMMENT ON FUNCTION sfti_makeSFTI(smallint) IS
 'Create a SFTI based on one smallint that is both the start and the end of the core.
 The support is considered to be equal to the core.
 In effect this creates a sharp time interval of a single day.';
-
--- From real to SFTI
-
-CREATE OR REPLACE FUNCTION sfti_makeSFTI(sa real, ka real, kb real, sb real, l float) RETURNS sfti AS $$
-	SELECT format('(%s,%s,%s,%s,%s)',$1,$2,$3,$4,$5)::sfti;
-$$ LANGUAGE sql IMMUTABLE;
-
-CREATE OR REPLACE FUNCTION sfti_makeSFTI(sa real, ka real, kb real, sb real) RETURNS sfti AS $$
-	SELECT sfti_makeSFTI($1,$2,$3,$4,1);
-$$ LANGUAGE sql IMMUTABLE;
-COMMENT ON FUNCTION sfti_makeSFTI(real, real, real, real) IS
-'Create a SFTI based on four reals that are the start of the support,
-the start of the core, the end of the core and the end of the support.';
-
-CREATE OR REPLACE FUNCTION sfti_makeSFTI(ka real, kb real, l float) RETURNS sfti AS $$
-	SELECT sfti_makeSFTI($1,$1,$2,$2,$3);
-$$ LANGUAGE sql IMMUTABLE;
-
-CREATE OR REPLACE FUNCTION sfti_makeSFTI(ka real, kb real) RETURNS sfti AS $$
-	SELECT sfti_makeSFTI($1,$1,$2,$2,1);
-$$ LANGUAGE sql IMMUTABLE;
-COMMENT ON FUNCTION sfti_makeSFTI(real, real) IS
-'Create a SFTI based on two reals that are the start and the end of the core.
-The support is considered to be equal to the core.
-In effect this creates a sharp time interval.';
-
-CREATE OR REPLACE FUNCTION sfti_makeSFTI(d real) RETURNS sfti AS $$
-	SELECT sfti_makeSFTI($1,$1,$1,$1,1);
-$$ LANGUAGE sql IMMUTABLE;
-COMMENT ON FUNCTION sfti_makeSFTI(real) IS
-'Create a SFTI based on one real that is both the start and the end of the core.
-The support is considered to be equal to the core.
-In effect this creates a sharp time interval of a single day.';
-
--- From double precision to SFTI
-
-CREATE OR REPLACE FUNCTION sfti_makeSFTI(sa double precision, ka double precision, kb double precision, sb double precision, l float) RETURNS sfti AS $$
-	SELECT format('(%s,%s,%s,%s,%s)',$1,$2,$3,$4,$5)::sfti;
-$$ LANGUAGE sql IMMUTABLE;
-
-CREATE OR REPLACE FUNCTION sfti_makeSFTI(sa double precision, ka double precision, kb double precision, sb double precision) RETURNS sfti AS $$
-	SELECT sfti_makeSFTI($1,$2,$3,$4,1);
-$$ LANGUAGE sql IMMUTABLE;
-COMMENT ON FUNCTION sfti_makeSFTI(double precision, double precision, double precision, double precision) IS
-'Create a SFTI based on four double precisions that are the start of the support,
-the start of the core, the end of the core and the end of the support.';
-
-CREATE OR REPLACE FUNCTION sfti_makeSFTI(ka double precision, kb double precision, l float) RETURNS sfti AS $$
-	SELECT sfti_makeSFTI($1,$1,$2,$2,$3);
-$$ LANGUAGE sql IMMUTABLE;
-
-CREATE OR REPLACE FUNCTION sfti_makeSFTI(ka double precision, kb double precision) RETURNS sfti AS $$
-	SELECT sfti_makeSFTI($1,$1,$2,$2,1);
-$$ LANGUAGE sql IMMUTABLE;
-COMMENT ON FUNCTION sfti_makeSFTI(double precision, double precision) IS
-'Create a SFTI based on two double precisions that are the start and the end of the core.
-The support is considered to be equal to the core.
-In effect this creates a sharp time interval.';
-
-CREATE OR REPLACE FUNCTION sfti_makeSFTI(d double precision) RETURNS sfti AS $$
-	SELECT sfti_makeSFTI($1,$1,$1,$1,1);
-$$ LANGUAGE sql IMMUTABLE;
-COMMENT ON FUNCTION sfti_makeSFTI(double precision) IS
-'Create a SFTI based on one double precision that is both the start and the end of the core.
-The support is considered to be equal to the core.
-In effect this creates a sharp time interval of a single time point.';
-
--- From numeric to SFTI
-
-CREATE OR REPLACE FUNCTION sfti_makeSFTI(d numeric) RETURNS sfti AS $$
-	SELECT sfti_makeSFTI($1::double precision);
-$$ LANGUAGE sql IMMUTABLE;
-COMMENT ON FUNCTION sfti_makeSFTI(numeric) IS
-'Create a SFTI based on one numeric that is both the start and the end of the core.
-The support is considered to be equal to the core.
-In effect this creates a sharp time interval of a single time point.';
 
 -- From date to SFTI
 
@@ -394,6 +333,43 @@ In effect this creates a sharp time interval of a single date.';
 --
 -- Make it easier to fuzzify some stuff.
 --
+
+-- Fuzzify years
+
+CREATE OR REPLACE FUNCTION sfti_fuzzify(ka integer, kb integer, lv integer, rv integer, l float) RETURNS sfti AS $$
+    SELECT sfti_makeSFTI($1 - $3, $1, $2, $2 + $4,$5);
+$$ LANGUAGE sql IMMUTABLE;
+
+CREATE OR REPLACE FUNCTION sfti_fuzzify(ka integer, kb integer, lv integer, rv integer) RETURNS sfti AS $$
+    SELECT sfti_fuzzify($1,$2,$3,$4,1.0);
+$$ LANGUAGE sql IMMUTABLE;
+COMMENT ON FUNCTION sfti_fuzzify(integer, integer, integer, integer) IS
+'Creates a SFTI based on two years that form the core of the SFTI and two years
+that determine the Fuzzy Beginning and Fuzzy End of the SFTI.';
+
+CREATE OR REPLACE FUNCTION sfti_fuzzify(ka integer, kb integer, v integer, l float) RETURNS sfti AS $$
+    SELECT sfti_fuzzify($1, $2, $3, $3, $4);
+$$ LANGUAGE sql IMMUTABLE;
+
+CREATE OR REPLACE FUNCTION sfti_fuzzify(ka integer, kb integer, v integer) RETURNS sfti AS $$
+    SELECT sfti_fuzzify($1, $2, $3, $3, 1.0);
+$$ LANGUAGE sql IMMUTABLE;
+COMMENT ON FUNCTION sfti_fuzzify(integer, integer, integer) IS
+'Creates a SFTI based on two years that form the core of the SFTI and one year
+that determine the Fuzzy Beginning and Fuzzy End of the SFTI.';
+
+CREATE OR REPLACE FUNCTION sfti_fuzzify(y integer, v integer, l float) RETURNS sfti AS $$
+    SELECT sfti_fuzzify($1,$1,$2,$2,$3);
+$$ LANGUAGE sql IMMUTABLE;
+
+CREATE OR REPLACE FUNCTION sfti_fuzzify(y integer, v integer) RETURNS sfti AS $$
+    SELECT sfti_fuzzify($1,$1,$2,$2,1.0);
+$$ LANGUAGE sql IMMUTABLE;
+COMMENT ON FUNCTION sfti_fuzzify(integer, integer) IS
+'Create a SFTI based on one year that forms the core of the SFTI and one year
+that determines both the Fuzzy Beginning and Fuzzy End of the SFTI.';
+
+-- Fuzzify dates
 
 CREATE OR REPLACE FUNCTION sfti_fuzzify(ka date, kb date, lv interval, rv interval, l float) RETURNS sfti AS $$
     SELECT sfti_makeSFTI(($1 - $3)::date, $1, $2, ($2 + $4)::date,$5);
@@ -445,7 +421,4 @@ that determines both the Fuzzy Beginning and Fuzzy End of the SFTI.';
 
 CREATE CAST (integer AS sfti) WITH FUNCTION sfti_makeSFTI(integer);
 CREATE CAST (smallint AS sfti) WITH FUNCTION sfti_makeSFTI(smallint);
-CREATE CAST (real AS sfti) WITH FUNCTION sfti_makeSFTI(real);
-CREATE CAST (double precision AS sfti) WITH FUNCTION sfti_makeSFTI(double precision);
-CREATE CAST (numeric AS sfti) WITH FUNCTION sfti_makeSFTI(numeric);
 CREATE CAST (date AS sfti) WITH FUNCTION sfti_makeSFTI(date);
