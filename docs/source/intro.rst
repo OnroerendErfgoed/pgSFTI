@@ -67,7 +67,8 @@ a couple of utility functions. These functions generally take sharp temporal
 objects and turn them into numbers using a certain algoritm. Eg. the 15th of 
 november 1972 wil be turned into `1972.87158469945`. This keeps the intrinsic
 order of the timepoints alive without have to keep on doing costly calculations
-on dates.
+on dates. Please keep in mind there is no year 0, but there is a time point `0`.
+So, the year 50 BC is actually timepoint `-49`.
 
 Examples
 --------
@@ -124,4 +125,49 @@ time points we are absolutely sure about.
           sfti_makesfti      
     ---------------------------
      (1972,1973,1978,1979,0.5)
+    (1 row)
+
+Similar functions exist that use `integers` in stead of `dates` as input. These
+are to be taken as representing years.
+
+.. code-block:: sql
+
+    pgsfti=# SELECT sfti_makesfti(1900, 1925, 1975, 1999); 
+                        sfti_makesfti                        
+    ------------------------------------------------------------
+     (1900.000000,1925.000000,1975.000000,1999.000000,1.000000)
+    (1 row)
+
+A few casts have been defined to quickly turn a single `date` or `integer` into
+an `sfti`.
+
+.. code-block:: sql
+
+    pgsfti=# SELECT '1972-11-15'::date::sfti;
+                                sfti                            
+    ------------------------------------------------------------
+     (1972.871585,1972.871585,1972.871585,1972.871585,1.000000)
+    (1 row)
+
+    pgsfti=# SELECT 1978::sfti;
+                                sfti                            
+    ------------------------------------------------------------
+     (1978.000000,1978.000000,1978.000000,1978.000000,1.000000)
+    (1 row)
+
+A further set of function exists to quickly create fuzzy intervals by taking a
+sharp interval or date and adding a fuzzy beginning and/or end.
+
+.. code-block:: sql
+
+    pgsfti=# SELECT sfti_fuzzify('1918-11-1'::date, '1 month'::interval);
+                            sfti_fuzzify                        
+    ------------------------------------------------------------
+     (1918.747945,1918.832877,1918.832877,1918.915068,1.000000)
+    (1 row)
+
+    pgsfti=# SELECT sfti_fuzzify(1940, 1945, 2, 1);
+                            sfti_fuzzify                        
+    ------------------------------------------------------------
+     (1938.000000,1940.000000,1945.000000,1946.000000,1.000000)
     (1 row)
