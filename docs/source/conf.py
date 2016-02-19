@@ -48,7 +48,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'PostgreSQL Simple Fuzzy Time Interval'
-copyright = u'2014, Flanders Heritage'
+copyright = u'2014-2015, Onroerend Erfgoed'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
