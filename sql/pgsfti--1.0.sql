@@ -337,7 +337,7 @@ In effect this creates a sharp time interval of a single date.';
 -- Fuzzify years
 
 CREATE OR REPLACE FUNCTION sfti_fuzzify(ka integer, kb integer, lv integer, rv integer, l float) RETURNS sfti AS $$
-    SELECT sfti_makeSFTI($1 - $3, $1, $2, $2 + $4,$5);
+    SELECT sfti_makeSFTI($1 - abs($3), $1, $2, $2 + abs($4),$5);
 $$ LANGUAGE sql IMMUTABLE;
 
 CREATE OR REPLACE FUNCTION sfti_fuzzify(ka integer, kb integer, lv integer, rv integer) RETURNS sfti AS $$
