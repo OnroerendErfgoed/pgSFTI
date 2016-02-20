@@ -149,7 +149,7 @@ CREATE OPERATOR < (
     procedure = sfti_lt,
     commutator = >
 );
-COMMENT ON OPERATOR && (sfti, sfti) IS
+COMMENT ON OPERATOR < (sfti, sfti) IS
 'Test if the left hand SFTI came before the right hand SFTI.';
 
 CREATE OR REPLACE FUNCTION sfti_gt(sfti, sfti)
@@ -163,7 +163,7 @@ CREATE OPERATOR > (
     procedure = sfti_gt,
     commutator = <
 );
-COMMENT ON OPERATOR && (sfti, sfti) IS
+COMMENT ON OPERATOR > (sfti, sfti) IS
 'Test if the left hand SFTI came after the right hand SFTI.';
 
 CREATE OR REPLACE FUNCTION sfti_eq(sfti, sfti)
@@ -177,7 +177,7 @@ CREATE OPERATOR = (
     procedure = sfti_eq,
     commutator = =
 );
-COMMENT ON OPERATOR && (sfti, sfti) IS
+COMMENT ON OPERATOR = (sfti, sfti) IS
 'Test if the left hand SFTI and the right hand SFTI are equal.';
 
 CREATE OR REPLACE FUNCTION sfti_intersects(sfti, sfti)
@@ -430,6 +430,6 @@ that determines both the Fuzzy Beginning and Fuzzy End of the SFTI.';
 -- Casts
 --
 
-CREATE CAST (integer AS sfti) WITH FUNCTION sfti_makeSFTI(integer);
-CREATE CAST (smallint AS sfti) WITH FUNCTION sfti_makeSFTI(smallint);
-CREATE CAST (date AS sfti) WITH FUNCTION sfti_makeSFTI(date);
+CREATE CAST (integer AS sfti) WITH FUNCTION sfti_makeSFTI(integer) AS IMPLICIT;
+CREATE CAST (smallint AS sfti) WITH FUNCTION sfti_makeSFTI(smallint) AS IMPLICIT;
+CREATE CAST (date AS sfti) WITH FUNCTION sfti_makeSFTI(date) AS IMPLICIT;
