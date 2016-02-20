@@ -149,6 +149,8 @@ CREATE OPERATOR < (
     procedure = sfti_lt,
     commutator = >
 );
+COMMENT ON OPERATOR && (sfti, sfti) IS
+'Test if the left hand SFTI came before the right hand SFTI.';
 
 CREATE OR REPLACE FUNCTION sfti_gt(sfti, sfti)
 	RETURNS bool
@@ -161,6 +163,8 @@ CREATE OPERATOR > (
     procedure = sfti_gt,
     commutator = <
 );
+COMMENT ON OPERATOR && (sfti, sfti) IS
+'Test if the left hand SFTI came after the right hand SFTI.';
 
 CREATE OR REPLACE FUNCTION sfti_eq(sfti, sfti)
 	RETURNS bool
@@ -173,6 +177,8 @@ CREATE OPERATOR = (
     procedure = sfti_eq,
     commutator = =
 );
+COMMENT ON OPERATOR && (sfti, sfti) IS
+'Test if the left hand SFTI and the right hand SFTI are equal.';
 
 CREATE OR REPLACE FUNCTION sfti_intersects(sfti, sfti)
 	RETURNS bool
@@ -185,6 +191,8 @@ CREATE OPERATOR && (
     procedure = sfti_intersects,
     commutator = &&
 );
+COMMENT ON OPERATOR && (sfti, sfti) IS
+'Test if the left hand SFTI and the right hand SFTI intersect.';
 
 CREATE OR REPLACE FUNCTION sfti_during(sfti, sfti)
 	RETURNS bool
@@ -196,6 +204,8 @@ CREATE OPERATOR @ (
     rightarg = sfti,
     procedure = sfti_during
 );
+COMMENT ON OPERATOR @ (sfti, sfti) IS
+'Test if the left hand SFTI existed during the right hand SFTI.';
 
 CREATE OR REPLACE FUNCTION sfti_contains(sfti, sfti)
 	RETURNS bool
@@ -207,7 +217,8 @@ CREATE OPERATOR ~ (
     rightarg = sfti,
     procedure = sfti_contains
 );
-
+COMMENT ON OPERATOR ~ (sfti, sfti) IS
+'Test if the left hand SFTI contains the right hand SFTI.';
 
 --
 -- Turning time into SFTI
