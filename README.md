@@ -3,6 +3,8 @@ PostgreSQL simpleFuzzyTimeInterval
 
 This PostgreSQL extension adds a simple FuzzyTimeInterval to PostgreSQL.
 
+[![Documentation Status](https://readthedocs.org/projects/pgsfti/badge/?version=latest)](http://pgsfti.readthedocs.org/en/latest/?badge=latest)
+
 Installation
 ------------
 
