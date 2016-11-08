@@ -91,6 +91,36 @@ sfti_send(PG_FUNCTION_ARGS)
 }
 
 /**
+ * Casts
+ */
+
+PG_FUNCTION_INFO_V1(sfti_to_float);
+Datum sfti_to_float(PG_FUNCTION_ARGS);
+
+Datum
+sfti_to_float(PG_FUNCTION_ARGS)
+{
+    sfti	*frame = (sfti *) PG_GETARG_POINTER(0);
+    double  result;
+
+    result = frame->ka + ( (frame->kb - frame->ka) / 2 );
+    PG_RETURN_FLOAT8(result);
+}
+
+PG_FUNCTION_INFO_V1(sfti_to_int);
+Datum sfti_to_int(PG_FUNCTION_ARGS);
+
+Datum
+sfti_to_int(PG_FUNCTION_ARGS)
+{
+    sfti	*frame = (sfti *) PG_GETARG_POINTER(0);
+    double  result;
+
+    result = round(frame->ka + ( (frame->kb - frame->ka) / 2 ));
+    PG_RETURN_INT32(result);
+}
+
+/**
  * Supporting functions
  */
 

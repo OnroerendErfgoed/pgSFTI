@@ -35,6 +35,20 @@ CREATE TYPE sfti (
    alignment = double
 );
 
+CREATE OR REPLACE FUNCTION sfti_to_float(sfti)
+    RETURNS float
+    AS 'MODULE_PATHNAME', 'sfti_to_float'
+    LANGUAGE C IMMUTABLE STRICT;
+
+CREATE OR REPLACE FUNCTION sfti_to_int(sfti)
+    RETURNS integer
+    AS 'MODULE_PATHNAME', 'sfti_to_int'
+    LANGUAGE C IMMUTABLE STRICT;
+
+CREATE OR REPLACE FUNCTION sfti_to_smallint(sfti)
+    RETURNS smallint
+    AS 'MODULE_PATHNAME', 'sfti_to_int'
+    LANGUAGE C IMMUTABLE STRICT;
 
 --
 -- Allen relations
@@ -433,3 +447,6 @@ that determines both the Fuzzy Beginning and Fuzzy End of the SFTI.';
 CREATE CAST (integer AS sfti) WITH FUNCTION sfti_makeSFTI(integer) AS IMPLICIT;
 CREATE CAST (smallint AS sfti) WITH FUNCTION sfti_makeSFTI(smallint) AS IMPLICIT;
 CREATE CAST (date AS sfti) WITH FUNCTION sfti_makeSFTI(date) AS IMPLICIT;
+CREATE CAST (sfti AS float) WITH FUNCTION sfti_to_float(sfti) AS IMPLICIT;
+CREATE CAST (sfti AS integer) WITH FUNCTION sfti_to_int(sfti) AS IMPLICIT;
+CREATE CAST (sfti AS smallint) WITH FUNCTION sfti_to_smallint(sfti) AS IMPLICIT;
